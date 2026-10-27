@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>artifact-vault · VIOLINET Tech</title>
+<meta name="description" content="Agent skill: save every Claude artifact into one private git repo, one branch per app and kind, then search it and compare it against a session, a feature list or an upload.">
+<meta property="og:title" content="artifact-vault · VIOLINET Tech"><meta property="og:description" content="Save every Claude artifact into one private git repo, sorted by app and kind, then search and compare it.">
+<meta property="og:image" content="https://violinet-tech.github.io/artifact-vault/cover.webp"><meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#F3EEE3;--panel:#FBF8F1;--ink:#1A1915;--mute:#5E584B;--rule:#D9CFBC;--accent:#0F6F66;--accent-ink:#FFFFFF;--brass:#9A6A14;--code:#ECE5D4;
+ --serif:Fraunces,Georgia,'Times New Roman',serif;--sans:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1816;--panel:#10201D;--ink:#F1EBDD;--mute:#A9BDB6;--rule:#24403B;--accent:#3FB6A8;--accent-ink:#0B1816;--brass:#E7C277;--code:#0E1C19;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1816;--panel:#10201D;--ink:#F1EBDD;--mute:#A9BDB6;--rule:#24403B;--accent:#3FB6A8;--accent-ink:#0B1816;--brass:#E7C277;--code:#0E1C19;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.02rem/1.7 var(--sans)}
+.shell{max-width:860px;margin:0 auto;padding-inline:20px}
+nav{padding:22px 0;border-bottom:1px solid var(--rule);font:500 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;display:flex;gap:22px;flex-wrap:wrap}
+nav a{color:var(--mute);text-decoration:none} nav a:hover{color:var(--accent)}
+.hero{padding-block:56px 20px}
+.eyebrow{font:500 .72rem var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin:0 0 12px}
+h1{font:800 clamp(2.4rem,7vw,4rem)/1.02 var(--serif);margin:0 0 14px;letter-spacing:-.01em;word-break:break-word}
+.lede{font:600 1.25rem/1.45 var(--serif);color:var(--mute);margin:0 0 28px;max-width:34ch}
+img.cover{width:100%;display:block;border:1px solid var(--rule);border-radius:4px;margin:0 0 26px}
+.card{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:4px;padding:22px 24px;margin:0 0 18px}
+.card p{margin:0;color:var(--mute)} code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 6px;border-radius:3px}
+.trig{font:400 .84rem/1.6 var(--mono);background:var(--code);border:1px solid var(--rule);border-radius:4px;padding:12px 16px;margin:0 0 26px}
+.trig b{color:var(--accent);font-weight:500}
+h2{font:800 1.5rem/1.2 var(--serif);margin:34px 0 12px}
+.cmd{position:relative;background:var(--code);border:1px solid var(--rule);border-radius:4px;padding:14px 92px 14px 16px;font:400 .8rem/1.5 var(--mono);overflow-x:auto;white-space:pre}
+.cmd button{position:absolute;right:8px;top:8px;font:500 .68rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:6px 10px;cursor:pointer}
+.cmd button:hover{border-color:var(--accent)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:0}
+.how div{border-top:3px solid var(--brass);padding-top:10px}
+.how b{display:block;font:600 1rem var(--serif)} .how span{color:var(--mute);font-size:.92rem}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0}
+.btn{display:inline-block;font:500 .76rem var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink);border:1px solid var(--ink);border-radius:3px;padding:10px 18px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)} .btn:hover{border-color:var(--accent)}
+footer{border-top:1px solid var(--rule);margin-top:48px;padding:22px 0 40px;color:var(--mute);font-size:.88rem}
+footer a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+</style></head><body>
+<div class="shell">
+<nav><a href="https://violinettech.ai/skills.html">VIOLINET Tech Skills</a><a href="https://github.com/Violinet-tech/violet-skills">Bundle</a><a href="slides.html">Slides</a></nav>
+<div class="hero">
+<p class="eyebrow">Agent skill · 1.0</p>
+<h1>artifact-vault</h1>
+<p class="lede">Every Claude artifact, kept, sorted, searchable.</p>
+<img class="cover" src="cover.webp" alt="A branch tree: a dev trunk with labelled folder tabs for each app and kind, ending in an images branch." loading="lazy">
+<div class="card"><p>Copies every Claude artifact into one private git repo, one branch per app and kind (features, guides, screenshots, slides, docs) with an <code>images</code> branch for generated test pictures. Keys found in a page are replaced on the way in and reported by kind, never printed. Then it searches the vault and compares it against the current session, a requested feature list, an uploaded file, or the live artifact list. Zero dependencies: Node and git.</p></div>
+<div class="trig"><b>Use when:</b> you want to save, back up or organise Claude artifacts, find an old deck, guide or generated picture, or check whether something is already documented.</div>
+</div>
+
+<h2>How it works</h2>
+<div class="how">
+<div><b>1. Save</b><span>Claude lists and downloads your artifacts; <code>ingest</code> sorts them into branches.</span></div>
+<div><b>2. Search</b><span>Images, slides, features, guides, screenshots and docs, by app, date or words.</span></div>
+<div><b>3. Compare</b><span>Against a session, a feature list, an upload, or what is live.</span></div>
+</div>
+
+<h2>Install</h2>
+<div class="cmd"><span id="cmd">git clone https://github.com/Violinet-tech/artifact-vault ~/.claude/skills/artifact-vault</span><button type="button" onclick="navigator.clipboard.writeText(document.getElementById('cmd').textContent).then(function(){},function(){});this.textContent='Copied'">Copy</button></div>
+<p style="color:var(--mute);font-size:.92rem">Works in Claude Code and any harness that reads the <code>SKILL.md</code> format. The markdown is also plain docs, readable without an agent. Then ask: "Save all my artifacts into a vault."</p>
+<div class="btns"><a class="btn pri" href="https://github.com/Violinet-tech/artifact-vault">View on GitHub</a><a class="btn" href="slides.html">Slides</a><a class="btn" href="https://github.com/Violinet-tech/artifact-vault/blob/release/docs/USER-GUIDE.md">User guide</a><a class="btn" href="https://github.com/Violinet-tech/artifact-vault/blob/release/SKILL.md">Read SKILL.md</a><a class="btn" href="https://github.com/Violinet-tech/violet-skills">All as one plugin</a></div>
+<footer>MIT licensed. From <a href="https://violinettech.ai">VIOLINET Tech</a>. More skills: <a href="https://github.com/orgs/Violinet-tech/repositories?q=topic%3Aagent-skills">github.com/Violinet-tech</a></footer>
+</div></body></html>
